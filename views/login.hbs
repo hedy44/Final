@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+{{>header }}
+  
+</head>
+<body>
+
+<nav>
+		<h4>LORAWAN</h4>
+		<ul>
+			<li><a href="/">Página Inicial</a></li>
+			<li><a href="/register">Register</a></li>
+			
+		</ul>
+	</nav>
+<div class="container mt-4">
+      <div class="card">
+        <div class="card-header">
+          Login
+       
+        </div>
+  <!-- <img src="..." class="card-img-top" alt="..."> -->
+  <div class="card-body">
+    {{!-- {{#if msg}}
+    <p class='{{msg_type}}'>{{msg}}</p>
+    {{/if}} --}}
+     <form  action="/login" method="POST">
+
+         <div class="mb-3">
+          <label for="email" class="form-label">Email Address</label>
+          <input type="email" class="form-control" id="email" name="email" {{!-- este vai para o req.body "email" --}}>
+        </div>
+        
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" {{!-- este vai para o req.body "password"--}}>
+        </div>
+        
+       
+        <button type="submit" class="btn btn-primary">Login</button>
+        <button class="btn btn-primary"> 
+          <a href="/" class="back"> 
+		        Voltar
+	        </a>
+         </button>
+    </form>
+  </div>
+</div>
+
+</div>
+
+
+
+
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- 
+<script src ="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script src = "/socket.io/socket.io.js"></script>
+<script src = "/processdata.js"></script>  -->
+
+</html> 
