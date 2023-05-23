@@ -1,17 +1,17 @@
-
-
 module.exports = (sequelize, DataTypes) => {
+  const Locals = sequelize.define('local', {
+      localName: DataTypes.STRING,
+      localDescription: DataTypes.STRING
+  }, {
+      freezeTableName: true // Não pluralizar o nome da tabela
+  });
 
-    const Local = sequelize.define('local', 
-    {
-        localName: DataTypes.STRING,
-        localDescription: DataTypes.STRING
-    },
-    {
-        freezeTableName: true //To not pluralize the table name
+  Locals.associate = (models) => {
+      Locals.hasMany(models.Sensor, {
+          foreignKey: 'localId',
+          as: 'sensors'
+      });
+  };
 
-     });
-
-     return Local;
-
+  return Locals;
 };
