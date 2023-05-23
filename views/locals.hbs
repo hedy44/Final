@@ -27,7 +27,6 @@
         <table>
       <thead>
         <tr>
-          <th>ID</th>
           <th>Local Name</th>
           <th>Local Description</th>
           <th></th>
@@ -36,7 +35,6 @@
   <tbody>
     {{#each locals}}
     <tr>
-        <td>{{this.id}}</td>
         <td>{{this.localName}}</td>
         <td>{{this.localDescription}}</td>
         <td>
@@ -51,12 +49,12 @@
 
 
         <button class="button login__submit">
-            <span class="button_local">  <a href="/addlocal">Adicionar Localização</a></span>
+            <span class="button_local">  <a href="/addlocal">Adicionar Local</a></span>
          </button>	
 
          <button> 
-          <a href="logged"> 
-		        <h2>Voltar</h2>
+          <a href="logged" > 
+		        <h2 >Voltar</h2>
 	        </a>
          </button>
          
