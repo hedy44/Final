@@ -25,7 +25,7 @@
 <div class="container mt-4">
       <div class="card">
         <div class="card-header">
-          Register Form
+          Add Sensor 
        
         </div>
    <!-- <img src="..." class="card-img-top" alt="...">  -->
@@ -88,6 +88,26 @@
           {{!-- <div id="small_map">
             </div> --}}
         </div>
+        
+
+<!-- TODO: Dropdown com as opçoes de selecionar os locais ja existentes ou entao criar um local novo -->
+    <div class="mb-3">
+      <label for="local" class="form-label">Local:</label>
+        <select name="localId" class="form-control" id="localId">
+        <option value="" selected>Selecione um local existente</option>
+    {{#each locals}}
+        <option value="{{this.id}}">{{this.localName}}</option>
+    {{/each}}
+    <option value="new">Nova Localização</option>
+  </select>
+  <small id="newLocalHelp" class="form-text text-muted">Caso a localização desejada não esteja listada, selecione "Nova Localização" e insira o nome do novo local abaixo.</small>
+</div>
+
+<div class="mb-3">
+  <label for="newLocal" class="form-label">Nova Localização:</label>
+  <input type="text" class="form-control" id="newLocal" name="newLocal">
+</div>
+
       
 
         <div class="mb-3">
