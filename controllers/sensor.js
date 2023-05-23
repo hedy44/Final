@@ -1,4 +1,6 @@
-const { models : { Sensor }} = require('../models');
+const { models: { Sensor, Locals: LocalsModel } } = require('../models');
+
+
 
 module.exports = {
     createSensor: async (req, res) => {
@@ -12,9 +14,10 @@ module.exports = {
             appKey,
             sensorname,
             location,
+            localId,
             description,
           } = req.body;
-    
+
           const newSensor = await Sensor.create({
             sensortype,
             model,
@@ -24,6 +27,7 @@ module.exports = {
             appKey,
             sensorname,
             location,
+            localId ,
             description,
           });
           
@@ -34,6 +38,7 @@ module.exports = {
         }
       },  
 
+      //Metodo para ir buscar todos os sensores
       getAllSensors: async (req, res) => {
         try {
           const sensors = await Sensor.findAll();
@@ -44,6 +49,7 @@ module.exports = {
         }
       },
 
+//Metodo para apagar os sensores
       deleteSensor: async (req, res) => {
     try {
       const {
@@ -56,6 +62,17 @@ module.exports = {
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal Server Error when trying to delete' });
+    }
+  },
+
+  //buscar os locais
+  getLocals: async (req, res) => {
+    try {
+      const locals = await LocalsModel.findAll();
+      return locals;
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal Server Error when trying to get locals' });
     }
   },
 
