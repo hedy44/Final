@@ -13,6 +13,9 @@ router.get('/',authMiddleware, async (req, res) => {
     }
   });
 
+  // Rota para buscar os locais
+router.get('/locals', sensor.getLocals);
+
 
 
 
