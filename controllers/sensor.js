@@ -1,4 +1,4 @@
-const { models: { Sensor, Locals: LocalsModel } } = require('../models');
+const { models: { Sensor, Locals: Locals } } = require('../models');
 
 
 
@@ -20,6 +20,23 @@ module.exports = {
 
           const { id: userId } = req.user; // Obtém o userId do objeto req.user 
 
+          let createdLocalId;
+
+      if (localId === 'new') {
+        // Cria um novo local
+        const { newLocal, newLocalDescription } = req.body;
+
+        const newLocalObj = await Locals.create({
+          localName: newLocal,
+          description: newLocalDescription,
+          userId: userId,
+        });
+
+        createdLocalId = newLocalObj.id;
+      } else {
+        createdLocalId = localId;
+      }
+
           const newSensor = await Sensor.create({
             sensortype,
             model,
@@ -28,8 +45,8 @@ module.exports = {
             appEUI,
             appKey,
             sensorname,
-            location,
-            localId ,
+            location ,
+            localId :createdLocalId ,
             description,
             userId, // Atribui o ID do usuário ao criar o sensor
           });
@@ -71,7 +88,7 @@ module.exports = {
   //buscar os locais
   getLocals: async (req, res) => {
     try {
-      const locals = await LocalsModel.findAll();
+      const locals = await Locals.findAll();
       return locals;
     } catch (error) {
       console.error(error);
