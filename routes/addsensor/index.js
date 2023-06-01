@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { sensor } = require('../../controllers');
+const authMiddleware = require('../../middlewares/auth');
 
 // router.get('/', (req, res) => {
     
@@ -19,8 +20,8 @@ router.get('/', async (req, res) => {
 
 
 
-router.post('/', sensor.createSensor);
-router.delete('/', sensor.deleteSensor);
+router.post('/', authMiddleware, sensor.createSensor);
+router.delete('/',authMiddleware,  sensor.deleteSensor);
 
 
 module.exports = router;
