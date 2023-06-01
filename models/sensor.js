@@ -35,6 +35,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true, // Permitir que seja nulo, pois pode ser um novo local
       },
 
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+
       description: DataTypes.TEXT
   }, {
       freezeTableName: true // Não pluralizar o nome da tabela
