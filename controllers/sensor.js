@@ -18,6 +18,8 @@ module.exports = {
             description,
           } = req.body;
 
+          const { id: userId } = req.user; // Obtém o userId do objeto req.user 
+
           const newSensor = await Sensor.create({
             sensortype,
             model,
@@ -29,6 +31,7 @@ module.exports = {
             location,
             localId ,
             description,
+            userId, // Atribui o ID do usuário ao criar o sensor
           });
           
           return res.redirect('sensors');
@@ -73,6 +76,21 @@ module.exports = {
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal Server Error when trying to get locals' });
+    }
+  },
+
+  getUserSensors: async (req, res) => {
+    try {
+      const userId = req.user.id; // Obtém o ID do usuário logado
+
+      const sensors = await Sensor.findAll({
+        where: { userId }, // Filtra pelos sensores associados ao usuário logado
+      });
+
+      return sensors;
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal Server Error' });
     }
   },
 
