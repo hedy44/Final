@@ -92,6 +92,15 @@ app.all('/my-route', (req, res)=>{
     console.log("Connected!");
 })();
 
+//MQTT connection
+
+const mqttClient = require('./mqttconection/mqttConnector.js');
+
+// Use o cliente MQTT em qualquer lugar necessário
+mqttClient.subscribe('seu_tópico');
+mqttClient.publish('seu_tópico', 'sua_mensagem');
+
+
 
 //Server connection
 
@@ -100,3 +109,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT || 3000, () => { 
    console.log(`listening on *: ${PORT}`);
 });
+
+
+
