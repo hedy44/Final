@@ -1,0 +1,11 @@
+node_modules/
+dist/
+config.js
+
+# Arquivos específicos do editor de código
+.vscode/
+
+# Arquivos de ambiente
+.env
+
+
