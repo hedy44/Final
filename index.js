@@ -1,37 +1,37 @@
 const express = require('express');
 const app = express();
 const path = require('path');
-const db = require('./models');
+const db = require('./backend/models');
 const hbs = require('hbs');
 const session = require('express-session');
 const dotenv = require('dotenv').config({path:'./.env'});
 const cookieParser = require('cookie-parser');
 
 //Importing router Object
-const users = require('./routes/users');
-const login = require('./routes/login');
-const register = require('./routes/register');
-const logout = require ('./routes/logout');
-const sensors = require('./routes/sensors');
-const locals = require('./routes/locals');
-const graphs = require('./routes/graphs');
-const addsensor = require('./routes/addsensor');
-const addlocal = require('./routes/addlocal');
-const sensorsread = require('./routes/sensorsread');
-const logged = require('./routes/logged');
-const profile = require('./routes/profile');
+const users = require('./backend/routes/users');
+const login = require('./backend/routes/login');
+const register = require('./backend/routes/register');
+const logout = require ('./backend/routes/logout');
+const sensors = require('./backend/routes/sensors');
+const locals = require('./backend/routes/locals');
+const graphs = require('./backend/routes/graphs');
+const addsensor = require('./backend/routes/addsensor');
+const addlocal = require('./backend/routes/addlocal');
+const sensorsread = require('./backend/routes/sensorsread');
+const logged = require('./backend/routes/logged');
+const profile = require('./backend/routes/profile');
 
 
 
 //Set template view engine
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'frontend/views'));
 
 //Path to use static files , css, images , etc.
-const publicDirectory = path.join(__dirname, './public');
+const publicDirectory = path.join(__dirname, 'frontend/public');
 app.use(express.static(publicDirectory));
 
-const partialsPath= path.join(__dirname, './views/partials');
+const partialsPath= path.join(__dirname, 'frontend/views/partials');
 hbs.registerPartials(partialsPath);
 
 //Responsible for populating the req.body with data
@@ -94,7 +94,7 @@ app.all('/my-route', (req, res)=>{
 
 //MQTT connection
 
-const mqttClient = require('./mqttconection/mqttConnector.js');
+const mqttClient = require('./backend/mqttconection/mqttConnector.js');
 
 // Use o cliente MQTT em qualquer lugar necessário
 mqttClient.subscribe('seu_tópico');
