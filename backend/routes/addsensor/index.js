@@ -3,11 +3,6 @@ const router = express.Router();
 const { sensor } = require('../../controllers');
 const authMiddleware = require('../../middlewares/auth');
 
-// router.get('/', (req, res) => {
-    
-//     res.render('addsensor');
-// });
-
 router.get('/', async (req, res) => {
     try {
       const locals = await sensor.getLocals();

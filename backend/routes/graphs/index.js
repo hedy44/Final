@@ -8,8 +8,4 @@ router.get('/',authMiddleware, (req, res) => {
     res.render('graphs');
 });
 
-
-
-
-
 module.exports = router;
