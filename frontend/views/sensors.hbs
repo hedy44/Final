@@ -30,26 +30,20 @@
     <table>
       <thead>
         <tr>
-          <th>Tipo</th>
-          <th>Modelo</th>
-          <th>Plano de Frequência</th>
+          <th>Model</th>
           <th>DEV EUI</th>
-          <th>APP EUI</th>
           <th>APP KEY</th>
           <th>Name Sensor</th>
-          <th>Localização</th>
-          <th>Descrição</th>
+          <th>Localization</th>
+          <th>Description</th>
           <th></th>
         </tr>
       </thead>
   <tbody>
     {{#each sensors}}
     <tr>
-        <td><a href='/sensorsread'>{{this.sensortype}}</a></td>
-        <td>{{this.model}}</td>
-        <td>{{this.frequencyPlan}}</td>
+        <td><a href='/sensorsread'>{{this.model}}</a></td>
         <td>{{this.devEUI}}</td>
-        <td>{{this.appEUI}}</td>
         <td>{{this.appKey}}</td>
         <td>{{this.sensorname}}</td>
         <td>{{this.location}}</td>
