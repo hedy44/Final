@@ -13,5 +13,6 @@ db.models = {};
 db.models.User = require('./user')(sequelize, Sequelize.DataTypes);
 db.models.Sensor = require('./sensor')(sequelize, Sequelize.DataTypes);
 db.models.Locals = require('./locals')(sequelize, Sequelize.DataTypes);
+db.models.SensorData = require('./sensordata')(sequelize, Sequelize.DataTypes);
 
 module.exports = db;
