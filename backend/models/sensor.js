@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       sensorname: {
         type: DataTypes.STRING(255),
         allowNull: false,
+        unique: true // torna o campo sensorname único
       },
       location: DataTypes.STRING(255),
       localId: {
@@ -40,6 +41,11 @@ module.exports = (sequelize, DataTypes) => {
       Sensor.belongsTo(models.Locals, {
         foreignKey: 'localId',
         as: 'local',
+      });
+
+      Sensor.hasMany(models.SensorData, {
+        foreignKey: 'sensorId',
+        as: 'sensorData',
       });
     };
   
