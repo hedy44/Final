@@ -1,6 +1,7 @@
 const mqtt = require('mqtt');
 const io = require('socket.io')(4000);
 
+
 const options = {
   port: 1883,
   clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
@@ -29,17 +30,17 @@ client.on('connect', function() {
     const payloadFields = msg.uplink_message.decoded_payload;
 
     if (payloadFields.temp_c) {
-        const temperature = payloadFields.temp_c;
+        temperature = payloadFields.temp_c;
         console.log('Temperature:', temperature);
         // Faça o que desejar com a temperatura recebida, como salvar em um banco de dados ou processá-la de alguma forma.
       }
     
     if (payloadFields.humidity) {
-        const humidity = payloadFields.humidity;
+       humidity = payloadFields.humidity;
         console.log('Humidity:', humidity);
         // Faça o que desejar com a umidade recebida, como salvar em um banco de dados ou processá-la de alguma forma.
       }
-
+//TODO: criar para a base de dados
       // Emita os dados para o cliente conectado via socket.io
   io.emit('temperature', temperature);
   io.emit('humidity', humidity);
