@@ -1,5 +1,4 @@
 const { models: { Sensor, Locals: Locals } } = require('../models');
-const mqttClient = require('../../backend/mqttconection/mqttConnector');
 const axios = require('axios');
 
 module.exports = {
@@ -55,20 +54,21 @@ module.exports = {
               "dev_eui": devEUI,
               "join_eui": "0000000000000000"
             },
-            "join_server_address": "eu1.cloud.thethings.network",
+            "lorawan_version": "1.0.0",
+            "supports_join": true,
+            "frequency_plan_id": "EU_863_870",
+            "root_keys": {
+              "app_key": {
+                "key": appKey
+              }
+            },
+            "routing_profile_id": "AS923",
+            "application_server_address": "eu1.cloud.thethings.network",
             "network_server_address": "eu1.cloud.thethings.network",
-            "application_server_address": "eu1.cloud.thethings.network"
-          },
-          "field_mask": {
-            "paths": [
-              "join_server_address",
-              "network_server_address",
-              "application_server_address",
-              "ids.dev_eui",
-              "ids.join_eui"
-            ]
-        }
-};
+            "join_server_address": "eu1.cloud.thethings.network"
+          }
+        };
+        
 
 const headers = {
   'Authorization': 'Bearer NNSXS.VBDNJAKZMO3PJCOUKZBSMMMQKXDNZJ2JIDAT25Q.LZL37FNTTUJURDKSYK4EM5I4O5AUPYKIZGM3R2I32BYEQLUS6HHA'
