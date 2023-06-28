@@ -2,6 +2,6 @@ module.exports = {
     HOST: 'localhost',
     USER: 'root',
     PASSWORD: 'root',
-    DATABASE: 'teste1',
+    DATABASE: 'bdlora',
     DIALECT: 'mysql'
 }
