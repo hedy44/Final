@@ -1,11 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { user } = require('../../controllers');
+const readingsController = require('../../controllers/readingsController');
 
-router.get('/', (req, res) => {
-    
-    res.render('sensorsread');
-});
-
+router.get('/:sensorname', readingsController.getSensorReadings);
 
 module.exports = router;
