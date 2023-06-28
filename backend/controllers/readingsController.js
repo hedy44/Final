@@ -5,6 +5,7 @@ const readingsController = {};
 readingsController.saveReading = async (temperature, humidity, sensorname) => {
   try {
     // Pesquisar o sensor com base no sensorname (device_id)
+    
     const sensor = await db.models.Sensor.findOne({
       where: { sensorname }
     });
@@ -29,5 +30,34 @@ readingsController.saveReading = async (temperature, humidity, sensorname) => {
     console.error('Erro ao salvar leitura do sensor:', error);
   }
 };
+
+
+readingsController.getSensorReadings = async (req, res) => {
+  
+    const sensorname = req.params.sensorname;
+    console.log('Valor de sensorname:', sensorname);//LOg prar teste
+    // Obtenha as informações do sensor com base no sensorname
+    const sensor = await db.models.Sensor.findOne({
+      where: { sensorname },
+    });
+
+    if (sensor) {
+      // Obtenha as leituras do sensor com base no sensorname
+      const readings = await db.models.SensorData.findAll({
+        where: { sensorname },
+      });
+
+      // Renderize a página sensorsread.hbs passando as informações do sensor e as leituras
+      return res.render('sensorsread', { sensor, readings });
+    } else if (sensor === null) {
+      console.log('Sensor não encontrado.');
+      return res.status(404).json({ message: 'Sensor não encontrado' });
+    } else {
+      console.log('Erro ao buscar sensor:', sensor);
+      return res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+};
+
+
 
 module.exports = readingsController;
