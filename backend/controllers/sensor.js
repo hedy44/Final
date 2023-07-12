@@ -1,6 +1,25 @@
 const { models: { Sensor, Locals: Locals } } = require('../models');
 const axios = require('axios');
 
+// Função excluir o dispositivo da TTN
+const deleteSensorTTN = async (id, devEUI) => {
+  try {
+    const appID = 'projeto-2022-test';
+    const ttnAPIUrl = `https://eu1.cloud.thethings.network/api/v3/applications/${appID}/devices/${id}`;
+
+    const headers = {
+      'Authorization': 'Bearer NNSXS.VBDNJAKZMO3PJCOUKZBSMMMQKXDNZJ2JIDAT25Q.LZL37FNTTUJURDKSYK4EM5I4O5AUPYKIZGM3R2I32BYEQLUS6HHA'
+    };
+
+    await axios.delete(ttnAPIUrl, { headers });
+
+    console.log('Device deleted from TTN');
+  } catch (error) {
+    throw new Error('Error deleting device from TTN:', error);
+  }
+};
+
+
 module.exports = {
   createSensor: async (req, res) => {
     try {
@@ -102,15 +121,33 @@ const headers = {
   deleteSensor: async (req, res) => {
     try {
       const { id } = req.body;
-      await Sensor.destroy({
-        where: { id: id }
-      });
+
+      // Excluir da TTN
+      try {
+        const sensor = await Sensor.findOne({ where: { id } });
+
+        await deleteSensorTTN(sensor.sensorname, sensor.devEUI);
+
+        console.log('Device deleted from TTN');
+      } catch (error) {
+        console.error('Error deleting device from TTN:', error);
+      }
+
+      // Excluir do banco de dados
+      try {
+        await Sensor.destroy({ where: { id } });
+
+        console.log('Device deleted from the database');
+      } catch (error) {
+        console.error('Error deleting device from the database:', error);
+      }
+
       return res.status(200).json({ message: 'deleted' });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal Server Error when trying to delete' });
     }
-  },
+},
 
   getLocals: async (req, res) => {
     try {
