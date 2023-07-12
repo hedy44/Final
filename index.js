@@ -3,6 +3,9 @@ const app = express();
 const path = require('path');
 const db = require('./backend/models');
 const hbs = require('hbs');
+hbs.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+});
 const session = require('express-session');
 const dotenv = require('dotenv').config({path:'./.env'});
 const cookieParser = require('cookie-parser');
