@@ -9,8 +9,8 @@ const readingsController = require('../controllers/readingsController');
 const options = {
   port: 1883,
   clientId: 'mqttjs_' + Math.random().toString(16).substr(2, 8),
-  username: 'projeto-2022-test@ttn', // Substitua pelo seu username
-  password: 'NNSXS.VBDNJAKZMO3PJCOUKZBSMMMQKXDNZJ2JIDAT25Q.LZL37FNTTUJURDKSYK4EM5I4O5AUPYKIZGM3R2I32BYEQLUS6HHA', // Substitua pela sua API Key
+  username: 'projeto-2022-test@ttn', //username
+  password: 'NNSXS.VBDNJAKZMO3PJCOUKZBSMMMQKXDNZJ2JIDAT25Q.LZL37FNTTUJURDKSYK4EM5I4O5AUPYKIZGM3R2I32BYEQLUS6HHA', //API Key
   keepalive: 60,
   reconnectPeriod: 1000,
   clean: true,
