@@ -38,7 +38,10 @@
         <td>{{this.localName}}</td>
         <td>{{this.localDescription}}</td>
         <td>
+        <div class="action-buttons">
+          <div class="edit" onclick="editSensor({{this.id}})">Edit</div>
           <div class="delete" onclick="deleteLocal({{this.id}})">Delete</div>
+        </div>
         </td>
     </tr>
     {{/each}}
@@ -48,14 +51,12 @@
 
 
 
-        <button class="button login__submit">
-            <span class="button_local">  <a href="/addlocal">Adicionar Local</a></span>
+        <button class="submit">
+            <span<a href="/addlocal">Adicionar Local</a></span>
          </button>	
 
-         <button> 
-          <a href="logged" > 
-		        <h2 >Voltar</h2>
-	        </a>
+         <button class="back"> 
+          <a href="logged">Voltar</a>
          </button>
          
          

@@ -40,22 +40,24 @@
       <td><a href="/sensorsread/{{this.sensorname}}">{{this.sensorname}}</a></td>
       <td>{{this.location}}</td>
       <td>{{this.description}}</td>
-      <td>
+
+        <td>
+      <div class="action-buttons">
+        <div class="edit" onclick="editSensor({{this.id}})">Edit</div>
         <div class="delete" onclick="deleteSensor({{this.id}})">Delete</div>
-      </td>
+      </div>
+    </td>
     </tr>
     {{/each}}
   </tbody>
 </table>
 
-<button class="button login__submit">
-  <span class="button_sensor"><a href="/addsensor">Add new sensor</a></span>
+<button class="submit">
+  <span><a href="/addsensor">Add new sensor</a></span>
 </button>
 
-<button>
-  <a href="/logged">
-    <h2>Voltar</h2>
-  </a>
+<button class="back">
+  <a href="/logged">Voltar</a>
 </button>
 
 <script>
