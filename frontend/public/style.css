@@ -68,6 +68,7 @@ nav li a:hover {
 
 table {
     width: 100%;
+    margin-left: 10px;
     border-collapse: collapse;
   }
   
@@ -85,30 +86,30 @@ table {
     vertical-align: middle;
   }
   
-  .col-sensortype {
-    width: 20%;
+  .col-sensorname {
+    width: 40%;
   }
-  
-  .col-model {
-    width: 20%;
-  }
-  
-  .col-frequencyPlan {
-    width: 20%;
-  }
-  
-  .col-devEUI {
-    width: 20%;
-  }
-  
+
   .col-location {
-    width: 10%;
+    width: 20%;
+  }
+  
+  
+  .col-description {
+    width: 20%;
   }
   
   .col-actions {
-    width: 10%;
+    width: 20%;
     text-align: center;
   }
+
+  .action-buttons{
+    display: flex ;
+    gap:10px;
+
+  }
+
 
   .delete {
     background-color: rgba(150, 50, 50);
@@ -117,3 +118,47 @@ table {
     padding: 5px 10px 5px 10px;
     cursor: pointer;
   }
+
+  .edit {
+    background-color: rgb(175, 36, 255);
+    color: white;
+    border-radius: 10px;
+    padding: 5px 10px 5px 10px;
+    cursor: pointer;
+  }
+
+/* BOTOES SUBMIT E VOLTAR */
+.submit {
+  color:purple;
+  text-decoration: none;
+  font-weight: bold;
+  
+}
+  .submit a{
+    color:purple;
+    text-decoration: none;
+    font-weight: bold;
+    
+  }
+
+  .submit a:hover{
+    color:black;
+    text-decoration: none;
+    font-weight: bold;
+    
+  }
+
+  .back a{
+    color: purple;
+    text-decoration: none;
+    font-weight: bold;
+    
+  }
+  .back a:hover{
+    color: black;
+    text-decoration: none;
+    font-weight: bold;
+    
+  }
+  
+  
