@@ -57,7 +57,7 @@
 {{!-- Leaflet js --}}
 <script>
 // Map initilization
-    var map = L.map('map').setView([39.78, -8.93], 25);
+    var map = L.map('map').setView([39.524210, -8.403460], 25);
 
 //osm layer
 
@@ -76,7 +76,7 @@ var topoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
 //topoMap.addTo(map);
 
 
-//MARKER
+//Marker
 //Marker Style 
 var myIcon = L.icon({
     iconUrl: 'images/sensor.png',
@@ -84,7 +84,7 @@ var myIcon = L.icon({
 
 });
 
-var marker= L.marker([39.78, -8.93], {icon: myIcon});
+var marker= L.marker([39.524210, -8.403460], {icon: myIcon});
 var popup= marker.bindPopup('Estou Aqui');
 
 marker.addTo(map);
