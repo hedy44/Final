@@ -110,6 +110,8 @@ table {
 
   }
 
+  
+
 
   .delete {
     background-color: rgba(150, 50, 50);
@@ -121,6 +123,7 @@ table {
 
   .edit {
     background-color: rgb(175, 36, 255);
+    text-decoration: none;
     color: white;
     border-radius: 10px;
     padding: 5px 10px 5px 10px;
