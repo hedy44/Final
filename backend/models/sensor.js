@@ -18,7 +18,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true // torna o campo sensorname único
       },
-      location: DataTypes.STRING(255),
+      latitude: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
+      longitude: {
+        type: DataTypes.FLOAT,
+        allowNull: true,
+      },
       localId: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -42,6 +49,8 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'localId',
         as: 'local',
       });
+
+      
 
       Sensor.hasMany(models.SensorData, {
         foreignKey: 'sensorId',
