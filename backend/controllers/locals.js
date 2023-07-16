@@ -32,10 +32,38 @@ module.exports = {
         }
       },
 
+      renderEditLocalPage: async (req, res) => {
+        try {
+          const {id } = req.params;
+          const local = await Locals.findOne({where: {id}});
+         
+          res.render('editlocal', {local });
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({ message: 'Internal Server Error' });
+        }
+      },
+
+      editLocal: async (req, res) => {
+        try {
+          const { id } = req.params;
+          const { localName, localDescription } = req.body;
+      
+          await Locals.update(
+            { localName, localDescription },
+            { where: { id } }
+          );
+      
+          return res.redirect('/locals');
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({ message: 'Internal Server Error' });
+        }
+      },
+      
       deleteLocal: async (req, res) => {
         try {
-          const {
-            id } = req.body;
+          const { id } = req.body;
           await Locals.destroy({
             where: { id: id }
           })
