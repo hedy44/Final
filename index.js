@@ -3,12 +3,17 @@ const app = express();
 const path = require('path');
 const db = require('./backend/models');
 const hbs = require('hbs');
-hbs.registerHelper('json', function(context) {
-    return JSON.stringify(context);
-});
 const session = require('express-session');
 const dotenv = require('dotenv').config({path:'./.env'});
 const cookieParser = require('cookie-parser');
+
+// Registrar os helpers do Handlebars
+hbs.registerHelper('json', function(context) {
+    return JSON.stringify(context);
+});
+hbs.registerHelper('eq', function (a, b) {
+    return a === b;
+  });
 
 //Importing router Object
 const users = require('./backend/routes/users');
