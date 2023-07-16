@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/style.css" >
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
 
 
 </head>
@@ -29,64 +29,92 @@
 
 <div class="container mt-4">
     <div class="home">
-        <h1>Welcome to Temperature and Humidity Readings {{email}}</h1>
-        
-        <div id="map">
-
+        <div class="titulo">
+        <h1>Welcome to Monitorização de Dados em Redes de Sensores suportadas pela TTN-Tomar</h1>
+        <h2>{{email}}</h2>
         </div>
-        <h2>Aqui depois ver que informação meter na pagina inicial</h2>
-        
+
+        <div id="map"></div>
+
+
+
+        {{!-- <div class="temperaturas">
+        <h2><span style="font-weight:bold;">Temperatura Máxima:</span> 39°C, captado pelo sensor "jadeu"</h2>
+        <h2><span style="font-weight:bold;">Temperatura Mínima: </span> 19°C,  captado pelo sensor "sensor1"</h2>
+        </div> --}}
+
     </div>
 </div>
 
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+ <script>
+	const sensors = [
+		{{#each sensors}}
+			{
+				latitude: {{this.latitude}},
+				longitude: {{this.longitude}},
+				sensorname: "{{this.sensorname}}"
+			},
+		{{/each}}
+	];
 
+	// Função para criar o mapa e adicionar marcadores
+	function createMap() {
+		// Inicialize o mapa
+		const map = L.map('map');
+
+		// Verifique se há sensores
+		if (sensors.length > 0) {
+			// Calcule o centro dos sensores
+			let totalLat = 0;
+			let totalLng = 0;
+
+			sensors.forEach(sensor => {
+				totalLat += sensor.latitude;
+				totalLng += sensor.longitude;
+			});
+
+			const centerLat = totalLat / sensors.length;
+			const centerLng = totalLng / sensors.length;
+
+			// Configure a exibição do mapa com base no centro dos sensores
+			map.setView([centerLat, centerLng], 13);
+		} else {
+			// Defina uma visualização padrão se não houver sensores
+			map.setView([0, 0], 13);
+		}
+
+		// Adicione um tile layer
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			maxZoom: 18
+		}).addTo(map);
+
+		// Adicione marcadores para cada sensor
+		sensors.forEach(sensor => {
+			const { latitude, longitude, sensorname } = sensor;
+
+			// Crie um marcador para o sensor
+			const marker = L.marker([latitude, longitude]).addTo(map);
+
+			// Adicione um popup com o nome do sensor ao marcador
+			marker.bindPopup(sensorname);
+
+			// Adicione um evento de clique ao marcador para redirecionar para a página de leituras
+			marker.on('click', () => {
+				window.location.href = `/sensorsread/${sensorname}`; 
+			});
+		});
+	}
+
+	// Chame a função para criar o mapa e adicionar os marcadores
+	createMap();
+</script>
 
 </body>
-<!-- <script src ="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src = "/socket.io/socket.io.js"></script>
-{{!-- <script src = "/processdata.js"></script> --}} -->
-
 </html> 
 
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 
-
-{{!-- Leaflet js --}}
-<script>
-// Map initilization
-    var map = L.map('map').setView([39.524210, -8.403460], 25);
-
-//osm layer
-
-var osm= L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-})
-
-osm.addTo(map);
-
-//Topo Map --> É Outro estilo de mapa 
-var topoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	maxZoom: 17,
-	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-});
-
-//topoMap.addTo(map);
-
-
-//Marker
-//Marker Style 
-var myIcon = L.icon({
-    iconUrl: 'images/sensor.png',
-    iconSize:     [40, 40], // size of the icon
-
-});
-
-var marker= L.marker([39.524210, -8.403460], {icon: myIcon});
-var popup= marker.bindPopup('Estou Aqui');
-
-marker.addTo(map);
-
-</script>

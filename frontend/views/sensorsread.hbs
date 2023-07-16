@@ -18,7 +18,6 @@
 		<li><a href="/logged">Home</a></li>
 		<li><a href="/sensors">My Sensors</a></li>
 		<li><a href="/locals">Locals</a></li>
-		<li><a href="/graphs">Graphs</a></li>
 		<li><a href="/logout">Logout</a></li>
 	</ul>
 </nav>
@@ -38,8 +37,8 @@
       {{#each readings}}
       <tr>
         <td>{{this.createdAt}}</td>
-        <td>{{this.temperature}}</td>
-        <td>{{this.humidity}}</td>
+        <td>{{this.temperature}} ºC</td>
+        <td>{{this.humidity}} %</td>
       </tr>
       {{/each}}
     </tbody>

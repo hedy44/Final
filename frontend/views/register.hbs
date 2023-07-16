@@ -4,72 +4,68 @@
   <title>Temperature and Humidity Readings</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="/style.css" >
+  <link rel="stylesheet" href="/style.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
+  <nav>
+    <h4>LORAWAN</h4>
+    <ul>
+      <li><a href="/">Página Inicial</a></li>
+      <li><a href="/login">Login</a></li>
+    </ul>
+  </nav>
 
-<nav>
-		<h4>LORAWAN</h4>
-		<ul>
-			<li><a href="/">Página Inicial</a></li>
-			<li><a href="/login">Login</a></li>
-			
-		</ul>
-	</nav>
-<div class="container mt-4">
-      <div class="card">
-        <div class="card-header">
-          Preencha os seguintes dados: <br>
-       
-        </div>
-   <!-- <img src="..." class="card-img-top" alt="...">  -->
-  <div class="card-body">
-    {{#if msg}}
-    <p class='{{msg_type}}'>{{msg}}</p>
-    {{/if}}
-     <form action ="/register" method="POST">
-      <div class="mb-3">
-{{!-- Validate email and password with regex pattern --}}
- <div class="mb-3">
-          <label for="email" class="form-label">Email Address:</label>
-          <input type="email" class="form-control" id="email" name="email" required>
-        </div>
-        
-        
-        <div class="mb-3">
-          <label for="password" class="form-label">Password:</label>
-          <input type="password" class="form-control" id="password" name="password" minlength="5" required>
-        </div>
-       
-        <button type="submit" class="submit">Register User</button>
-
-         <button class="back"> 
-          <a href="/"> 
-		        Voltar
-	        </a>
-         </button>
-        
-         
-    </form>
-
-   
-    
-
+  <div class="container mt-4">
+    <div class="card">
+      <div class="card-header">
+        Preencha os seguintes dados:
+      </div>
+      <div class="card-body">
+        {{#if msg}}
+          <p class="{{msg_type}}">{{msg}}</p>
+        {{/if}}
+        <form action="/register" method="POST">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address:</label>
+            <input type="email" class="form-control" id="email" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="password" name="password" minlength="5" required>
+          </div>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input type="text" class="form-control" id="username" name="username" required>
+          </div>
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name:</label>
+            <input type="text" class="form-control" id="firstName" name="firstName" required>
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name:</label>
+            <input type="text" class="form-control" id="lastName" name="lastName" required>
+          </div>
+          <div class="mb-3">
+            <label for="age" class="form-label">Age:</label>
+            <input type="number" class="form-control" id="age" name="age" required>
+          </div>
+          <div class="mb-3">
+            <label for="gender" class="form-label">Gender:</label>
+            <select class="form-control" id="gender" name="gender" required>
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+          <button type="submit" class="submit">Register User</button>
+          <button class="back">
+            <a href="/">Voltar</a>
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
-</div>
-
-</div>
-
-
-
-
 </body>
-
-
-<!-- <script src ="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src = "/socket.io/socket.io.js"></script>
-{{!-- <script src = "/processdata.js"></script> --}} -->
-
-</html> 
+</html>

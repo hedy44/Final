@@ -9,14 +9,24 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
+  <style>
+    #map {
+      margin-left: 25%;
+      height: 400px;
+      width: 25%;
+      margin-top: 50px;
+    }
+  </style>
+  </head>
 <body>
 
 <nav>
   <h4>LORAWAN</h4>
   <ul>
     <li><a href="/logged">Home</a></li>
-    <li><a href="/graphs">Graphs</a></li>
     <li><a href="/locals">Locals</a></li>
     <li><a href="/profile">Profile</a></li>
     <li><a href="/logout">Logout</a></li>
@@ -29,8 +39,8 @@
   <thead>
     <tr>
       <th>Name Sensor</th>
-      <th>Localization</th>
       <th>Description</th>
+      <th>Location</th>
       <th></th>
     </tr>
   </thead>
@@ -39,8 +49,8 @@
     
     <tr>
       <td><a href="/sensorsread/{{this.sensorname}}">{{this.sensorname}}</a></td>
-      <td>{{this.location}}</td>
       <td>{{this.description}}</td>
+      <td>{{this.localName}}</td>
 
 
         <td>
@@ -67,6 +77,63 @@
 <button class="back">
   <a href="/logged">Voltar</a>
 </button>
+
+<h1 style="margin-top:30px;">Localização dos sensores</h1>
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+<script>
+  const sensors = [
+    {{#each sensors}}
+      {
+        latitude: "{{this.latitude}}",
+        longitude: "{{this.longitude}}",
+        sensorname: "{{this.sensorname}}"
+      }
+    {{/each}}
+  ];
+
+  // Função para criar o mapa e adicionar marcadores
+  function createMap() {
+    // Obtenha as coordenadas dos sensores
+    const coordinates = sensors.map(sensor => [sensor.latitude, sensor.longitude]);
+
+    // Calcule o centro do mapa com base nas coordenadas dos sensores
+    const center = coordinates.reduce(
+      (acc, cur) => [acc[0] + cur[0] / coordinates.length, acc[1] + cur[1] / coordinates.length],
+      [0, 0]
+    );
+
+    // Inicialize o mapa com o centro calculado
+    const map = L.map('map').setView(center, 13);
+
+    // Adicione um tile layer (você pode usar um provedor de mapas de sua escolha)
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18
+    }).addTo(map);
+
+    // Adicione marcadores para cada sensor
+    sensors.forEach(sensor => {
+      const { latitude, longitude, sensorname } = sensor;
+
+      // Crie um marcador para o sensor
+      const marker = L.marker([latitude, longitude]).addTo(map);
+ // Crie um elemento HTML personalizado para exibir o nome do sensor
+      const sensorNameElement = document.createElement('div');
+      sensorNameElement.innerText = sensorname;
+
+      // Adicione o elemento ao marcador
+      marker.bindPopup(sensorNameElement);
+    });
+  }
+
+  // Chame a função para criar o mapa e adicionar os marcadores
+  createMap();
+</script>
+
 
 <script>
   const deleteSensor = (id) => {

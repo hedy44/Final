@@ -1,21 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-{{> header }}
+  {{> header }}
 <body>
   <nav>
-		<h4>LORAWAN</h4>
-		<ul>
-            <li><a href="/logged">Home</a></li>
-            <li><a href="/sensors">My Sensors</a></li>
-            <li><a href="/locals">Locals</a></li>
-            <li><a href="/graphs">Graphs</a></li>
-            <li><a href="/logout">Logout</a></li>
-        </ul>
-	</nav>
-  <h1>{{email}} 's Profile</h1>
-  <img src="/images/cookie.png">
+    <h4>LORAWAN</h4>
+    <ul>
+      <li><a href="/logged">Home</a></li>
+      <li><a href="/sensors">My Sensors</a></li>
+      <li><a href="/locals">Locals</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </nav>
+   <div class="profile-container">
+    <h1>{{email}}'s Profile</h1>
+    <img src="/images/{{gender}}_avatar.png" alt="Profile Picture">
+    
+    <p><strong>Username:</strong> {{username}}</p>
+    <p><strong>First Name:</strong> {{firstName}}</p>
+    <p><strong>Last Name:</strong> {{lastName}}</p>
+    <p><strong>Age:</strong> {{age}}</p>
+    <p><strong>Gender:</strong> {{gender}}</p>
+   
+  </div>
+
   
- 
+  
 </body>
 </html>
-

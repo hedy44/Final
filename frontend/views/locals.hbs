@@ -14,7 +14,6 @@
 		<h4>LORAWAN</h4>
 		<ul>
 			<li><a href="/logged">Home</a></li>
-			<li><a href="/graphs">Graphs</a></li>
       <li><a href="/sensors">Sensors</a></li>
       <li><a href="/profile">Profile</a></li>
       <li><a href="/logout">Logout</a></li>
@@ -39,7 +38,7 @@
         <td>{{this.localDescription}}</td>
         <td>
         <div class="action-buttons">
-          <div class="edit" onclick="editSensor({{this.id}})">Edit</div>
+          <div class="edit" onclick="editLocal({{this.id}})">Edit</div>
           <div class="delete" onclick="deleteLocal({{this.id}})">Delete</div>
         </div>
         </td>
@@ -52,7 +51,7 @@
 
 
         <button class="submit">
-            <span<a href="/addlocal">Adicionar Local</a></span>
+           <a href="/addlocal">Adicionar Local</a>
          </button>	
 
          <button class="back"> 
@@ -63,11 +62,16 @@
 </div>
 
 
-
-
-</body>
-
 <script>
+
+  
+
+  const editLocal = (localId) => {
+    // Redirecionar para a página de edição do local com o ID fornecido
+    window.location.href = `/locals/editlocal/${localId}`;
+  };
+
+
   const deleteLocal = (id) => {
     fetch('http://localhost:3000/addlocal', {
       method: 'DELETE',
@@ -81,11 +85,7 @@
       })
 
   }
-
 </script>
 
-<!-- <script src ="https://code.jquery.com/jquery-3.4.1.js"></script>
-<script src = "/socket.io/socket.io.js"></script>
-{{!-- <script src = "/processdata.js"></script> --}} -->
-
+</body>
 </html> 
