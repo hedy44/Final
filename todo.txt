@@ -1,0 +1,22 @@
+//BUG: Fica a faltar
+Quando spagar um local apagar tudo associado a esse local, sensores e afins
+Ao apagar um sensor apagar tambem todas as suas readings
+Editsensor //[]: (ver o erro de nao mudar nome)
+Local pertencer a cada user , devera ser preciso alterar o modelo do local para inserir o userID
+
+
+
+//[x]:FEITO
+Graficos com as variaçoes de temp e hum 
+Pagina editar Local //[x]: feito
+Mapa //[x]:FEITO
+Poder escolher localização no mapa. //[x]:FEITO
+adicionar mapa para mostrar sensores.//[x]:FEITO
+Criação de end device na ttn quando existe a criação de um sensor . //[x]:FEITO
+Delete """""""""""""""""""""""""""""""""""""""""""""""""""""""""    //[x]:FEITO
+Pagina do Edit sensor !!!! //[x]: A ser realizado de momento
+Pagina de quando se carrega no botao editar! //[x]: A ser realizado de momento 
+Meter o updateSensor no controller do sensor! //[x]: A ser realizado de momento
+
+ 
+
