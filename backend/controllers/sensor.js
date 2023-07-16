@@ -1,4 +1,5 @@
-const { models: { Sensor,Locals: Locals } } = require('../models');
+const db = require('../models');
+const { models: { Sensor,Locals: Locals, SensorData} } = require('../models');
 const axios = require('axios');
 
 // Função excluir o dispositivo da TTN
@@ -27,7 +28,8 @@ module.exports = {
         devEUI,
         appKey,
         sensorname,
-        location,
+        latitude,
+        longitude,
         localId,
         description,
       } = req.body;
@@ -41,7 +43,7 @@ module.exports = {
 
         const newLocalObj = await Locals.create({
           localName: newLocal,
-          description: newLocalDescription,
+          localDescription: newLocalDescription,
           userId: userId,
         });
 
@@ -55,11 +57,13 @@ module.exports = {
         devEUI,
         appKey,
         sensorname,
-        location,
+        latitude,
+        longitude,
         localId: createdLocalId,
         userId,
         description,
       });
+
      
       // Registro do dispositivo na TTN
       try {
@@ -165,6 +169,7 @@ const headers = {
 
       const sensors = await Sensor.findAll({
         where: { userId },
+       
       });
 
       return sensors;
@@ -291,4 +296,33 @@ const headers = {
       return res.status(500).json({ message: 'Internal Server Error' });
     }
   },
+
+  showSensorGraphs: async (req, res) => {
+    try {
+      const { sensorname } = req.params;
+  
+      // Obtenha as leituras do sensor com base no sensorname
+      const readings = await db.models.SensorData.findAll({
+        where: { sensorname },
+        order: [['createdAt', 'ASC']] // Ordenar as leituras por data de criação
+      });
+  
+      // Separe as leituras de temperatura e umidade em dois arrays diferentes
+      const temperatures = readings.map(reading => ({
+        temperature: reading.temperature,
+        createdAt: reading.createdAt
+      }));
+      const humidities = readings.map(reading => ({
+        humidity: reading.humidity,
+        createdAt: reading.createdAt
+      }));
+  
+      // Renderize a página graphs.hbs passando as leituras de temperatura e umidade
+      return res.render('graphs', { sensorname, temperatures: JSON.stringify(temperatures), humidities: JSON.stringify(humidities) });
+    } catch (error) {
+      console.error('Error fetching sensor readings:', error);
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
+  },
+  
 };
