@@ -14,5 +14,9 @@ router.get('/',authMiddleware, async (req, res) => {
     }
 });
 
+router.get('/editlocal/:id', locals.renderEditLocalPage);
+router.post('/editlocal/:id', locals.editLocal);
+
+
 
 module.exports = router;
