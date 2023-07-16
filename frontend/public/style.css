@@ -86,9 +86,9 @@ table {
     vertical-align: middle;
   }
   
-  .col-sensorname {
+  /* .col-sensorname {
     width: 40%;
-  }
+  } */
 
   .col-location {
     width: 20%;
@@ -164,4 +164,27 @@ table {
     
   }
   
-  
+  .texto_notlogged h5{
+    margin-top: 20px;
+    text-align:center;
+  }
+
+  .temperaturas{
+    text-align:center;
+    margin-top:20px;
+  }
+
+  .titulo h1, h2 {
+    text-align: center;
+  }
+
+  .card-header{
+    font-weight:bold;
+  }
+
+  /* Grafico */
+  #sensorChart {
+    width: 75%;
+    height: 600px;
+    margin: 0 auto;
+  }
