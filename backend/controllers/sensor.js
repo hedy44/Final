@@ -125,33 +125,42 @@ const headers = {
   deleteSensor: async (req, res) => {
     try {
       const { id } = req.body;
-
+  
+      // Antes de excluir o sensor, vamos buscar as readings associadas a ele
+    const sensor = await Sensor.findOne({ where: { id } });
+    if (!sensor) {
+      return res.status(404).json({ message: 'Sensor not found' });
+    }
+     
+      const readings = await SensorData.findAll({ where: { sensorname: sensor.sensorname } });
+  
+      // Agora, para cada reading, vamos excluí-la
+      for (const reading of readings) {
+        await reading.destroy();
+      }
+  
       // Excluir da TTN
       try {
         const sensor = await Sensor.findOne({ where: { id } });
-
+  
         await deleteSensorTTN(sensor.sensorname, sensor.devEUI);
-
+  
         console.log('Device deleted from TTN');
       } catch (error) {
         console.error('Error deleting device from TTN:', error);
       }
-
-      // Excluir do banco de dados
-      try {
-        await Sensor.destroy({ where: { id } });
-
-        console.log('Device deleted from the database');
-      } catch (error) {
-        console.error('Error deleting device from the database:', error);
-      }
-
+  
+      // Por fim, excluímos o sensor da base de dados
+      await Sensor.destroy({ where: { id } });
+  
+      console.log('Device deleted from the database');
+  
       return res.status(200).json({ message: 'deleted' });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal Server Error when trying to delete' });
     }
-},
+  },
 
   getLocals: async (req, res) => {
     try {
