@@ -6,7 +6,7 @@ const authMiddleware = require('../../middlewares/auth.js');
 
 router.get('/',authMiddleware, async (req, res) => {
     try {
-      const getLocals= await locals.getAllLocals();
+      const getLocals= await locals.getAllLocals(req.user.id);
       res.render('locals', { locals: getLocals });
     } catch (error) {
       console.error(error);
@@ -14,8 +14,8 @@ router.get('/',authMiddleware, async (req, res) => {
     }
 });
 
-router.get('/editlocal/:id', locals.renderEditLocalPage);
-router.post('/editlocal/:id', locals.editLocal);
+router.get('/editlocal/:id',authMiddleware, locals.renderEditLocalPage);
+router.post('/editlocal/:id',authMiddleware, locals.editLocal);
 
 
 
