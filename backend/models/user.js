@@ -40,6 +40,11 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: 'userId',
           as: 'sensors'
       });
+  
+    User.hasMany(models.Locals, {
+      foreignKey: 'userId',
+      as: 'locals'
+    });
   };
 
   return User;
