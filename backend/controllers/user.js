@@ -48,13 +48,27 @@ module.exports = {
         const user = await User.findOne({ where: { email, password } });
 
         if (user) {
+
+          req.user = {};
+
+          req.user.email = user.email;
+        req.user.gender = user.gender;
+        req.user.username = user.username;
+        req.user.firstName = user.firstName;
+        req.user.lastName = user.lastName;
+        req.user.age = user.age;
           // Gerar token
           const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
           // Definir o token como um cookie
           res.cookie('jwt', token, { httpOnly: true });
 
-          res.render('profile', { email, gender: user.gender });
+          res.render('profile', { email: user.email,
+                                  gender: user.gender,
+                                  username: user.username,
+                                  firstName: user.firstName,
+                                  lastName: user.lastName,
+                                  age: user.age });
         } else {
           res.render('login', {
             msg: "Email or password don't match",
