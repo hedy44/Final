@@ -36,18 +36,18 @@ readingsController.getSensorReadings = async (req, res) => {
   
     const sensorname = req.params.sensorname;
     console.log('Valor de sensorname:', sensorname);//LOg prar teste
-    // Obtenha as informações do sensor com base no sensorname
+    // Obter informações do sensor com base no sensorname
     const sensor = await db.models.Sensor.findOne({
       where: { sensorname },
     });
 
     if (sensor) {
-      // Obtenha as leituras do sensor com base no sensorname
+      // Obter as leituras do sensor com base no sensorname
       const readings = await db.models.SensorData.findAll({
         where: { sensorname },
       });
 
-      // Renderize a página sensorsread.hbs passando as informações do sensor e as leituras
+      // Renderizar a página sensorsread.hbs passando as informações do sensor e as leituras
       return res.render('sensorsread', { sensor, readings });
     } else if (sensor === null) {
       console.log('Sensor não encontrado.');
@@ -62,7 +62,7 @@ readingsController.getTemperatureRange = async (req, res) => {
   try {
     const sensorname = req.params.sensorname;
 
-    // Obtenha a temperatura máxima e mínima do sensor com base no sensorname
+    // Obter a temperatura máxima e mínima do sensor com base no sensorname
     const temperatures = await db.models.SensorData.findAll({
       where: { sensorname },
       attributes: [
@@ -75,7 +75,7 @@ readingsController.getTemperatureRange = async (req, res) => {
       const maxTemperature = temperatures[0].dataValues.maxTemperature;
       const minTemperature = temperatures[0].dataValues.minTemperature;
 
-      // Renderize a página logged.hbs passando as temperaturas máxima e mínima
+      // Renderizar a página logged.hbs passando as temperaturas máxima e mínima
       return res.render('logged', { email: req.user.email, maxTemperature, minTemperature });
     } else {
       console.log('Temperaturas não encontradas.');

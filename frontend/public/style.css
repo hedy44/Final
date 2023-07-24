@@ -188,3 +188,31 @@ table {
     height: 600px;
     margin: 0 auto;
   }
+
+
+  /*Profile*/
+
+  /* Estilizar a imagem do perfil */
+.profile-container img {
+  max-width: 200px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Estilizar o contêiner do perfil */
+.profile-container {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Estilizar o título do perfil (h1) */
+.profile-container h1 {
+  margin-bottom: 10px;
+}
+
+/* Estilizar os parágrafos de informações do perfil */
+.profile-container p {
+  margin: 5px 0;
+}

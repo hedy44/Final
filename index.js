@@ -31,6 +31,7 @@ const profile = require('./backend/routes/profile');
 
 
 
+
 //Set template view engine
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'frontend/views'));
@@ -75,8 +76,6 @@ app.use('/profile', profile);
 
 
 
-
-
 app.use((req,res,next) => {
     console.log(new Date().toLocaleDateString());
     next();
@@ -103,6 +102,7 @@ app.all('/my-route', (req, res)=>{
 //MQTT connection
 
 const mqttClient = require('./backend/mqttconection/mqttConnector.js');
+const { time } = require('console');
 
 // Use o cliente MQTT em qualquer lugar necessário
 mqttClient.subscribe('seu_tópico');

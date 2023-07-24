@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Temperature and Humidity Readings</title>
+  <title>Leituras de Temperatura and Humidade</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/style.css" >
@@ -14,9 +14,9 @@
 <nav>
   <h4>LORAWAN</h4>
   <ul>
-    <li><a href="/logged">Home</a></li>
-    <li><a href="/sensors">My Sensors</a></li>
-    <li><a href="/locals">Locals</a></li>
+    <li><a href="/logged">Pagina Inicial</a></li>
+    <li><a href="/sensors">Meus Sensores</a></li>
+    <li><a href="/locals">Locais</a></li>
     <li><a href="/logout">Log Out</a></li>
   </ul>
 </nav>
@@ -24,7 +24,7 @@
 <div class="container mt-4">
   <div class="card">
     <div class="card-header">
-      Edit Sensor 
+      Editar Sensor 
     </div>
 
     <div class="card-body">
@@ -59,22 +59,22 @@
             {{#each locals}}
             <option value="{{this.id}}">{{this.localName}}</option>
             {{/each}}
-            <option value="new">New Local</option>
+            <option value="new">Novo Local</option>
           </select>
-          <small id="newLocalHelp" class="form-text text-muted">If the desired location is not listed, select "New Location" and enter the name of the new location below</small>
+          <small id="newLocalHelp" class="form-text text-muted">Caso a localização desejada não esteja listada, selecione "Novo Local" e insira o nome do novo local abaixo.</small>
         </div>
 
         <div class="mb-3">
-          <label for="newLocal" class="form-label">New Location:</label>
+          <label for="newLocal" class="form-label">Novo Local:</label>
           <input type="text" class="form-control" id="newLocal" name="newLocal">
         </div>
 
         <div class="mb-3">
-          <label for="newLocalDescription" class="form-label"> New Location Description:</label>
+          <label for="newLocalDescription" class="form-label"> Descrição do Novo Local:</label>
           <input type="text" class="form-control" id="newLocalDescription" name="newLocalDescription">
         </div>
 
-        <button type="submit" name="save_select" class="submit">Edit Sensor</button>
+        <button type="submit" name="save_select" class="submit">Editar Sensor</button>
 
         <button class="back"> 
           <a href="sensors">
@@ -97,7 +97,7 @@
     const map = L.map('map');
 
     // Configure a exibição do mapa
-    map.setView([0, 0], 13); // Define a visualização padrão
+    map.setView([39.598281, -8.414841], 13); // Define a visualização padrão
 
     // Adicione um tile layer
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

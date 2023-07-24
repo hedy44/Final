@@ -10,7 +10,7 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <title>Graphs</title>
+  <title>Grafico</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
@@ -18,34 +18,42 @@
   <nav>
 	<h4>LORAWAN</h4>
 	<ul>
-		<li><a href="/logged">Home</a></li>
-		<li><a href="/sensors">My Sensors</a></li>
-		<li><a href="/locals">Locals</a></li>
-		<li><a href="/logout">Logout</a></li>
+		<li><a href="/logged">Pagina Inicial</a></li>
+		<li><a href="/sensors">Meus Sensores</a></li>
+		<li><a href="/locals">Locais</a></li>
+		<li><a href="/logout">Log Out</a></li>
 	</ul>
 </nav>
 
-  <h1>Temperature and Humidity Graph of {{this.sensorname}}</h1>
+  <h1>Grafico de Temperatura e Humidade do sensor {{this.sensorname}}</h1>
+
 
   <div>
     <canvas id="sensorChart"></canvas>
   </div>
 
-  <div>
-    <label for="dateFilter">Select Date:</label>
-    <input type="text" id="dateFilter" placeholder="Select a date">
+   <div class="d-flex justify-content-center mt-3">
+    <!-- Filtros do gráfico -->
+    <div class="mx-2">
+      <label for="dateFilter">Selecionar Data:</label>
+      <input type="text" id="dateFilter" placeholder="Select a date">
+    </div>
+
+    <div class="mx-2">
+      <label for="startHour">Hora de Inicio:</label>
+      <input type="text" id="startHour" placeholder="HH:mm">
+    </div>
+    <div class="mx-2">
+      <label for="endHour">Hora do Fim:</label>
+      <input type="text" id="endHour" placeholder="HH:mm">
+    </div>
+    <button onclick="filterData()" class="submit">Filtrar</button>
   </div>
 
-  <div>
-    <label for="startHour">Start Hour:</label>
-    <input type="text" id="startHour" placeholder="HH:mm">
+  <!-- Botão de exportação -->
+  <div class="d-flex justify-content-center mt-3">
+    <button onclick="exportData()" class="submit">Exportar Dados(JSON)</button>
   </div>
-  <div>
-    <label for="endHour">End Hour:</label>
-    <input type="text" id="endHour" placeholder="HH:mm">
-  </div>
-  <button onclick="filterData()">Filter</button>
-
   
 
   <script>
@@ -187,6 +195,38 @@
       const [day, month, year] = inputValue.split('/').map(Number);
       return new Date(year, month - 1, day);
     }
+
+
+     // Função para exportar os dados do gráfico em JSON
+  function exportData() {
+    const data = {
+      labels: sensorChart.data.labels,
+      datasets: sensorChart.data.datasets.map(dataset => {
+        return {
+          label: dataset.label,
+          data: dataset.data
+        };
+      })
+    };
+
+    // Crie um objeto Blob para o JSON exportado
+    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+
+    // Crie um link para download e defina o nome do arquivo
+    const a = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    a.href = url;
+    a.download = "sensor_data.json";
+
+    // Adicione o link ao DOM e clique nele para iniciar o download
+    document.body.appendChild(a);
+    a.click();
+
+    // Remova o link e revogue a URL do objeto Blob
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
   </script>
 </body>
 </html>

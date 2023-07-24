@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Temperature and Humidity Readings</title>
+  <title>Leituras de Temperatura and Humidade</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="/style.css">
@@ -14,9 +14,9 @@
      crossorigin=""/>
   <style>
     #map {
-      margin-left: 25%;
+      margin-left: 12.5%;
       height: 400px;
-      width: 25%;
+      width: 75%;
       margin-top: 50px;
     }
   </style>
@@ -26,10 +26,10 @@
 <nav>
   <h4>LORAWAN</h4>
   <ul>
-    <li><a href="/logged">Home</a></li>
-    <li><a href="/locals">Locals</a></li>
-    <li><a href="/profile">Profile</a></li>
-    <li><a href="/logout">Logout</a></li>
+    <li><a href="/logged">Pagina Inicial</a></li>
+    <li><a href="/locals">Locais</a></li>
+    <li><a href="/profile">Perfil</a></li>
+    <li><a href="/logout">Log Out</a></li>
   </ul>
 </nav>
 
@@ -38,9 +38,8 @@
 <table>
   <thead>
     <tr>
-      <th>Name Sensor</th>
-      <th>Description</th>
-      <th>Location</th>
+      <th>Nome do Sensor</th>
+      <th>Descrição</th>
       <th></th>
     </tr>
   </thead>
@@ -50,13 +49,12 @@
     <tr>
       <td><a href="/sensorsread/{{this.sensorname}}">{{this.sensorname}}</a></td>
       <td>{{this.description}}</td>
-      <td>{{this.localName}}</td>
 
 
         <td>
       <div class="action-buttons">
         <div class="edit" onclick="editSensor('{{this.sensorname}}')">
-            <a href="/sensors/editsensor/{{this.sensorname}}">Edit</a>
+            Editar
          </div>
 
         <div class="delete" onclick="deleteSensor({{this.id}})">Delete</div>
@@ -71,19 +69,20 @@
 </table>
 
 <button class="submit">
-  <span><a href="/addsensor">Add new sensor</a></span>
+  <span><a href="/addsensor">Adicionar novo sensor</a></span>
 </button>
 
 <button class="back">
   <a href="/logged">Voltar</a>
 </button>
 
-<h1 style="margin-top:30px;">Localização dos sensores</h1>
+<h1 style="margin-top:30px; text-align:center">Localização dos sensores</h1>
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
+
 <script>
   const sensors = [
     {{#each sensors}}
@@ -136,6 +135,12 @@
 
 
 <script>
+
+  const editSensor= (sensorname) => {
+    // Redirecionar para a página de edição do local com o ID fornecido
+    window.location.href = `/sensors/editsensor/${sensorname}`;
+  };
+
   const deleteSensor = (id) => {
     fetch('http://localhost:3000/addsensor', {
       method: 'DELETE',
