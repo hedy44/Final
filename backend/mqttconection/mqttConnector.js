@@ -36,8 +36,8 @@ async function handleMessage(topic, message) {
   let humidity = null;
   let userId = null;
 
-  if (payloadFields.temp_c) {
-    temperature = payloadFields.temp_c;
+  if (payloadFields.temperature) {
+    temperature = payloadFields.temperature;
     console.log('Temperature:', temperature);
   }
 
