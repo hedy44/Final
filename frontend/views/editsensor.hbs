@@ -31,31 +31,31 @@
       <form id="sensorForm" action="/sensors/editsensor/{{sensor.sensorname}}" method="POST">
         
         <div class="mb-3">
-          <label for="devEUI">New DEV EUI:</label>
+          <label for="devEUI">Novo DEV EUI:</label>
           <input type="text" class="form-control" id="devEUI" name="devEUI" required>
         </div>
 
         <div class="mb-3">
-          <label for="appKey"> New APP KEY:</label>
+          <label for="appKey"> Nova APP KEY:</label>
           <input type="text" class="form-control" id="appKey" name="appKey" required>
         </div>
 
         <div class="mb-3">
-          <label for="sensorname">New Name Sensor:</label>
+          <label for="sensorname">Novo nome do sensor:</label>
           <input type="text" class="form-control" id="newSensorname" name="newSensorname" placeholder="Ex. Quintal, Jardim, Vinha" required>
         </div>
 
        <div id="map" style="height: 400px;"></div>
 
         <div class="mb-3">
-          <label for="description" class="form-label">New Sensor Description:</label>
+          <label for="description" class="form-label">Nova Descriçao do sensor:</label>
           <input type="text" class="form-control" id="description" name="description" placeholder="Ex. vista para jardim, vista da vinha" required>
         </div>
 
         <div class="mb-3">
-          <label for="local" class="form-label">New Local:</label>
+          <label for="local" class="form-label">Novo Local:</label>
           <select name="localId" class="form-control" id="localId">
-            <option value="" selected>Select existing Local</option>
+            <option value="" selected>Selecione um local existente</option>
             {{#each locals}}
             <option value="{{this.id}}">{{this.localName}}</option>
             {{/each}}
