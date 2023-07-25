@@ -12,10 +12,21 @@ module.exports = {
           } = req.body;
 
           const userId = req.user.id;
+
+           // Verifique se o localName contém apenas letras (maiúsculas ou minúsculas)
+           const lettersRegex = /^[A-Za-z]+$/;
+           if (!lettersRegex.test(localName)) {
+             return res.render('addlocal', { msg: 'Apenas letras são permitidas no nome do local', msg_type: 'error' });
+           }
+
+      // Transforme a primeira letra do localName e localDescription em maiúscula
+      const formattedLocalName = localName.charAt(0).toUpperCase() + localName.slice(1);
+      const formattedLocalDescription = localDescription.charAt(0).toUpperCase() + localDescription.slice(1);
+
     
           const newLocal = await Locals.create({
-            localName,
-            localDescription,
+            localName:formattedLocalName,
+            localDescription:formattedLocalDescription,
             userId
             
           });
@@ -54,8 +65,24 @@ module.exports = {
           const { id } = req.params;
           const { localName, localDescription } = req.body;
       
+          // Verifique se o localName e localDescription contêm apenas letras (maiúsculas ou minúsculas)
+          const lettersRegex = /^[A-Za-z]+$/;
+          if (!lettersRegex.test(localName)) {
+            const local = await Locals.findOne({ where: { id } });
+            return res.render('editlocal', { local, msg: 'Apenas letras são permitidas no nome do local', msg_type: 'error' });
+          }
+
+          if (!lettersRegex.test(localDescription)) {
+            const local = await Locals.findOne({ where: { id } });
+            return res.render('editlocal', { local, msg: 'Apenas letras são permitidas na descrição do local', msg_type: 'error' });
+          }
+
+          // Transforme a primeira letra do localName e localDescription em maiúscula
+      const formattedLocalName = localName.charAt(0).toUpperCase() + localName.slice(1);
+      const formattedLocalDescription = localDescription.charAt(0).toUpperCase() + localDescription.slice(1);
+
           await Locals.update(
-            { localName, localDescription },
+            { localName:formattedLocalName, localDescription:formattedLocalDescription },
             { where: { id } }
           );
       

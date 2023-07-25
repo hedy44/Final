@@ -22,7 +22,9 @@
 
 <div class="container mt-4">
   <h1>Edit Local</h1>
-
+ {{#if msg}}
+    <p class='{{msg_type}}'>{{msg}}</p>
+    {{/if}}
   <form id="editLocalForm" action="/locals/editlocal/{{local.id}}" method="POST">
     <div class="mb-3">
       <label for="localName">Local Name:</label>
