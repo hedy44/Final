@@ -1,5 +1,5 @@
 const db = require('../models');
-const { models: { Sensor,Locals: Locals, SensorData} } = require('../models');
+const { models: { Sensor,Locals: Locals, SensorData, User} } = require('../models');
 const axios = require('axios');
 
 // Função excluir o dispositivo da TTN
@@ -34,6 +34,10 @@ module.exports = {
         description,
       } = req.body;
 
+
+      //validação do nome do sensor
+    const validSensorname = sensorname.toLowerCase();
+
       const { id: userId } = req.user;
 
       let createdLocalId;
@@ -56,7 +60,7 @@ module.exports = {
         model: 'Arduino MKR WAN 1310',
         devEUI,
         appKey,
-        sensorname,
+        sensorname:validSensorname,
         latitude,
         longitude,
         localId: createdLocalId,
@@ -73,7 +77,7 @@ module.exports = {
         const ttnPayload = {
           "end_device": {
             "ids": {
-              "device_id": sensorname,
+              "device_id": validSensorname,
               "dev_eui": devEUI,
               "join_eui": "0000000000000000"
             },
@@ -238,7 +242,7 @@ const headers = {
 
     sensor.devEUI = devEUI;
     sensor.appKey = appKey;
-    sensor.sensorname = newSensorname || sensorname; // Use o novo nome do sensor se fornecido, caso contrário, mantenha o nome original
+    sensor.sensorname = newSensorname; // Use o novo nome do sensor se fornecido, caso contrário, mantenha o nome original
     sensor.location = location;
     sensor.description = description;
     sensor.localId = localId === 'new' ? null : localId;
