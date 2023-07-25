@@ -1,9 +1,45 @@
 const jwt = require('jsonwebtoken');
 const { models: { User } } = require('../models');
 
+// Função para formatar a primeira letra de uma string para maiúscula
+function capitalizeFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
 module.exports = {
   create: async (req, res) => {
     const { email, password, username, firstName, lastName, age, gender } = req.body;
+
+ // Formatando o primeiro e último nome para que a primeira letra seja maiúscula
+ const formattedFirstName = capitalizeFirstLetter(firstName.trim());
+ const formattedLastName = capitalizeFirstLetter(lastName.trim());
+
+     // Expressões regulares para validar o formato dos campos
+     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+     const nameRegex = /^[a-zA-Z]+$/;
+     const ageRegex = /^[0-9]{2}$/;
+
+     // Verificar se o email está em branco ou não está no formato correto
+     if (!email || (email.trim() !== '' && !emailRegex.test(email))) {
+       return res.render("register", {
+         msg: "O email inserido não é válido.",
+         msg_type: "error",
+       });
+     }
+ 
+     if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+       return res.render("register", {
+         msg: "O Primeiro e Último nome devem conter apenas letras.",
+         msg_type: "error",
+       });
+     }
+ 
+     if (!ageRegex.test(age) || age < 18 || age > 90) {
+       return res.render("register", {
+         msg: "A idade deve ser um número entre 18 e 90.",
+         msg_type: "error",
+       });
+     }
 
     try {
       // Verificar se o usuário com o email já existe
@@ -25,7 +61,14 @@ module.exports = {
       }
 
       // Criar um novo usuário
-      const newUser = await User.create({ email, password, username, firstName, lastName, age, gender });
+      const newUser = await User.create({ 
+        email, 
+        password, 
+        username, 
+        firstName: formattedFirstName, 
+        lastName: formattedLastName, 
+        age, 
+        gender });
 
       // Gerar o token JWT
       const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
@@ -33,7 +76,9 @@ module.exports = {
       // Definir o token como um cookie
       res.cookie('jwt', token, { secure: true });
 
-      res.render('login');
+      res.render('login',  
+      {msg: "Registo efectuado com sucesso",
+      msg_type: "good"});
     } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');

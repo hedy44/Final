@@ -15,7 +15,11 @@
 			
 		</ul>
 	</nav>
+ 
 <div class="container mt-4">
+  {{#if msg}}
+    <p class='{{msg_type}}'>{{msg}}</p>
+    {{/if}}
       <div class="card">
         <div class="card-header">
           Login
@@ -23,9 +27,7 @@
         </div>
   <!-- <img src="..." class="card-img-top" alt="..."> -->
   <div class="card-body">
-    {{!-- {{#if msg}}
-    <p class='{{msg_type}}'>{{msg}}</p>
-    {{/if}} --}}
+   
      <form  action="/login" method="POST">
 
          <div class="mb-3">
