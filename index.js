@@ -6,6 +6,7 @@ const hbs = require('hbs');
 const session = require('express-session');
 const dotenv = require('dotenv').config({path:'./.env'});
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 
 // Registrar os helpers do Handlebars
 hbs.registerHelper('json', function(context) {
@@ -97,6 +98,39 @@ app.all('/my-route', (req, res)=>{
 (async () => {
     await db.sequelize.sync();
     console.log("Connected!");
+
+      // Create admin if it doesn't exist
+  const { models } = require('./backend/models');
+
+  try {
+    const adminEmail = 'admin@admin.com';
+    const adminUsername = 'admin';
+    const adminPassword = 'admin';
+
+    // Check if the admin already exists
+    const admin = await models.User.findOne({ where: { email: adminEmail } });
+
+    if (!admin) {
+      // Create a new admin
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(adminPassword, saltRounds);
+
+      await models.User.create({
+        email: adminEmail,
+        username: adminUsername,
+        password: hashedPassword,
+        firstName: 'Admin',
+        lastName: 'Admin',
+        age: 28,
+        gender: 'male',
+        isAdmin: true,
+      });
+
+      console.log('Admin created successfully!');
+    }
+  } catch (error) {
+    console.error('Error creating admin:', error);
+  }
 })();
 
 //MQTT connection
