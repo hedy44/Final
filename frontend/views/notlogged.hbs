@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="/style.css" >
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
 
 
 </head>
@@ -49,42 +51,52 @@
 
 </html> 
 
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
 
 
 {{!-- Leaflet js --}}
 <script>
-// Map initilization
-    var map = L.map('map').setView([39.524210, -8.403460], 25);
+ // Function to create the map and add marker at user location
+  function createMap(userLatitude, userLongitude) {
+    // Map initialization
+    var map = L.map('map').setView([userLatitude, userLongitude], 15);
 
-//osm layer
+    // OSM layer
+    var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    osm.addTo(map);
 
-var osm= L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-})
+    // Marker
+    var myIcon = L.icon({
+      iconUrl: 'images/sensor.png',
+      iconSize: [40, 40],
+    });
 
-osm.addTo(map);
+    // Add marker at user location
+    var marker = L.marker([userLatitude, userLongitude], { icon: myIcon }).addTo(map);
+    marker.bindPopup('Está Aqui').openPopup();
+  }
 
-//Topo Map --> É Outro estilo de mapa 
-var topoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-	maxZoom: 17,
-	attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-});
-
-//topoMap.addTo(map);
-
-
-//Marker
-//Marker Style 
-var myIcon = L.icon({
-    iconUrl: 'images/sensor.png',
-    iconSize:     [40, 40], // size of the icon
-
-});
-
-var marker= L.marker([39.524210, -8.403460], {icon: myIcon});
-var popup= marker.bindPopup('Estou Aqui');
-
-marker.addTo(map);
+  // Get user's geolocation coordinates if available
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const userLatitude = position.coords.latitude;
+        const userLongitude = position.coords.longitude;
+        createMap(userLatitude, userLongitude);
+      },
+      function (error) {
+        console.error('Error getting user location:', error);
+        // Use default location if geolocation is denied or unavailable
+        createMap(39.524210, -8.403460); // Default location
+      }
+    );
+  } else {
+    // Use default location if geolocation is not available
+    createMap(39.524210, -8.403460); // Default location
+  }
 
 </script>

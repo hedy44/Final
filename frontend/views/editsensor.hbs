@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="/style.css" >
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
 </head>
 <body>
 
@@ -24,7 +26,7 @@
 <div class="container mt-4">
   <div class="card">
     <div class="card-header">
-      Editar Sensor 
+      Editar Sensor - {{sensor.sensorname}}
     </div>
 
     <div class="card-body">
@@ -45,7 +47,12 @@
           <input type="text" class="form-control" id="newSensorname" name="newSensorname" placeholder="Ex. Quintal, Jardim, Vinha" required>
         </div>
 
-       <div id="map" style="height: 400px;"></div>
+       <div class="mb-3">
+  <label for="location">Localização:</label>
+  <div id="map" style="height: 400px;"></div>
+  <input type="hidden" id="latitude" name="latitude" value="{{sensor.latitude}}">
+  <input type="hidden" id="longitude" name="longitude" value="{{sensor.longitude}}">
+</div>
 
         <div class="mb-3">
           <label for="description" class="form-label">Nova Descriçao do sensor:</label>
@@ -87,47 +94,57 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
  
 <script>
-//Script para inicializar e renderizar o mapa 
-  // Função para criar o mapa e adicionar marcador
-  function createMap() {
-    // Inicialize o mapa
-    const map = L.map('map');
+const mapElement = document.getElementById('map');
+  const latitudeInput = document.getElementById('latitude');
+  const longitudeInput = document.getElementById('longitude');
 
-    // Configure a exibição do mapa
-    map.setView([39.598281, -8.414841], 13); // Define a visualização padrão
+  const map = L.map('map');
 
-    // Adicione um tile layer
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 18
-    }).addTo(map);
+  // Adicione um tile layer (você pode usar um provedor de mapas de sua escolha)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom: 18
+  }).addTo(map);
 
-    // Adicione um marcador ao clicar no mapa
-    map.on('click', function(event) {
-      const latitude = event.latlng.lat;
-      const longitude = event.latlng.lng;
+  // Verifique se há coordenadas de latitude e longitude no formulário
+  const latitude = parseFloat(latitudeInput.value);
+  const longitude = parseFloat(longitudeInput.value);
 
-      // Remova marcadores anteriores, se houver
-      map.eachLayer(function(layer) {
-        if (layer instanceof L.Marker) {
-          map.removeLayer(layer);
-        }
-      });
+  if (!isNaN(latitude) && !isNaN(longitude)) {
+    // Se houver coordenadas no formulário, configure a exibição do mapa com base nessas coordenadas
+    map.setView([latitude, longitude], 13);
 
-      // Crie um marcador para a nova localização
-      const marker = L.marker([latitude, longitude]).addTo(map);
+    // Crie um marcador para a localização atual do sensor
+    var marker = L.marker([latitude, longitude]).addTo(map);
 
-      // Armazene as coordenadas da nova localização nos campos de formulário
-      document.getElementById('latitude').value = latitude;
-      document.getElementById('longitude').value = longitude;
-    });
+    // Adicione um popup com as coordenadas do sensor ao marcador
+    marker.bindPopup(`Latitude: ${latitude.toFixed(6)}, Longitude: ${longitude.toFixed(6)}`).openPopup();
+  } else {
+    // Caso não haja coordenadas no formulário, defina uma localização padrão
+    map.setView([0, 0], 13);
   }
 
-  // Chame a função para criar o mapa e adicionar o marcador
-  createMap();
+  // Função para atualizar a posição do marcador e as coordenadas do formulário
+  function updateMarkerPosition(event) {
+    const { lat, lng } = event.latlng;
+    if (marker) {
+      marker.setLatLng(event.latlng);
+      marker.bindPopup(`Latitude: ${lat.toFixed(6)}, Longitude: ${lng.toFixed(6)}`).openPopup();
+    } else {
+      marker = L.marker([lat, lng]).addTo(map);
+      marker.bindPopup(`Latitude: ${lat.toFixed(6)}, Longitude: ${lng.toFixed(6)}`).openPopup();
+    }
+    latitudeInput.value = lat;
+    longitudeInput.value = lng;
+  }
+
+  // Adicione um evento de clique ao mapa para atualizar a posição do marcador
+  map.on('click', updateMarkerPosition);
 </script>
 
 <script>

@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="/style.css" >
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+     crossorigin=""/>
 
 
 </head>
@@ -42,7 +44,9 @@
 </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
  <script>
 	const sensors = [
 		{{#each sensors}}
@@ -76,9 +80,27 @@
 			// Configure a exibição do mapa com base no centro dos sensores
 			map.setView([centerLat, centerLng], 13);
 		} else {
-			// Defina uma visualização padrão se não houver sensores
-			map.setView([0, 0], 13);
-		}
+      // Tentar obter a geolocalização do usuário
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          // Obter as coordenadas de latitude e longitude do usuário
+          const { latitude, longitude } = position.coords;
+
+          // Definir a visualização do mapa com base na geolocalização do usuário
+          map.setView([latitude, longitude], 13);
+		  // Crie um marcador para a localização do usuário
+          const marker = L.marker([latitude, longitude]).addTo(map);
+          // Crie um elemento HTML personalizado para exibir a localização do usuário
+          const userLocationElement = document.createElement('div');
+          userLocationElement.innerText = 'Você está aqui';
+        },
+        error => {
+          console.error('Erro ao obter a geolocalização:', error);
+          // Caso ocorra um erro ao obter a geolocalização, defina uma visualização padrão
+          map.setView([0, 0], 13);
+        }
+      );
+    }
 
 		// Adicione um tile layer
 		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

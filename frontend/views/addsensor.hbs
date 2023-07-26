@@ -69,16 +69,16 @@
         </div>
 
         <div class="mb-3">
-  <label for="local" class="form-label">Local:</label>
-  <select name="localId" class="form-control" id="localId">
-    <option value="" selected>Selecione um local existente</option>
-    {{#each locals}}
-    <option value="{{this.id}}">{{this.localName}}</option>
-    {{/each}}
-    <option value="new">Novo Local</option>
-  </select>
-  <small id="newLocalHelp" class="form-text text-muted">Caso a localização desejada não esteja listada, selecione "Novo Local" e insira o nome do novo local abaixo.</small>
-</div>
+          <label for="local" class="form-label">Local:</label>
+          <select name="localId" class="form-control" id="localId">
+            <option value="" selected>Selecione um local existente</option>
+            {{#each locals}}
+            <option value="{{this.id}}">{{this.localName}}</option>
+            {{/each}}
+            <option value="new">Novo Local</option>
+          </select>
+          <small id="newLocalHelp" class="form-text text-muted">Caso a localização desejada não esteja listada, selecione "Novo Local" e insira o nome do novo local abaixo.</small>
+        </div>
 
         <div class="mb-3">
           <label for="newLocal" class="form-label">Novo Local:</label>
@@ -117,9 +117,7 @@
   const latitudeInput = document.getElementById('latitude');
   const longitudeInput = document.getElementById('longitude');
 
-
-   // Inicialize o mapa
-  const map = L.map('map').setView([39.598281, -8.414841], 13);
+  const map = L.map('map');
 
   // Adicione um tile layer (você pode usar um provedor de mapas de sua escolha)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
