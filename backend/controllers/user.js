@@ -99,6 +99,8 @@ module.exports = {
         if (user) {
           // Comparar a senha fornecida com o hash armazenado usando bcrypt.compareSync
           if (bcrypt.compareSync(password, user.password)) {
+            // Verificar se o usuário que fez login é o administrador
+            const isAdmin = user.email === 'admin@admin.com';
             // Se a senha corresponder, gerar o token JWT e redirecionar para a página de perfil
             const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
             res.cookie('jwt', token, { httpOnly: true });
@@ -109,7 +111,8 @@ module.exports = {
               username: user.username,
               firstName: user.firstName,
               lastName: user.lastName,
-              age: user.age
+              age: user.age,
+              isAdmin
             });
           } else {
             // Se a senha não corresponder, mostrar uma mensagem de erro
