@@ -6,7 +6,7 @@ const authMiddleware = require('../../middlewares/auth.js');
 
 router.get('/',authMiddleware, (req, res) => {
     
-    res.render('graphs');
+    res.render('graphs', {isAdmin: req.isAdmin});
 });
 
 router.get('/:sensorname', sensor.showSensorGraphs);

@@ -38,7 +38,7 @@ router.get('/edit/:id', async (req, res) => {
     const isAdmin = user.email === 'admin@admin.com';
 
     // página de edição do usuário, passando os dados do usuário e isAdmin para o formulário
-    res.render('editUser', { user, isAdmin: req.isAdmin });
+    res.render('editUser', { user, isAdmin });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -55,6 +55,8 @@ router.get('/delete/:id', async (req, res) => {
     if (!user) {
       return res.status(404).send('Usuário não encontrado');
     }
+
+    const isAdmin = user.email === 'admin@admin.com';
 
     // apaga user da BD
     await user.destroy();

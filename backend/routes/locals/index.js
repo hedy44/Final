@@ -7,7 +7,7 @@ const authMiddleware = require('../../middlewares/auth.js');
 router.get('/',authMiddleware, async (req, res) => {
     try {
       const getLocals= await locals.getAllLocals(req.user.id);
-      res.render('locals', { locals: getLocals });
+      res.render('locals', { locals: getLocals, isAdmin: req.isAdmin });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal Server Error' });

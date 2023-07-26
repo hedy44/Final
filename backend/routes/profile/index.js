@@ -3,6 +3,7 @@ const router = express.Router();
 const authMiddleware = require('../../middlewares/auth.js');
 
 
+
 router.get('/',authMiddleware, (req, res) => {
     
    
@@ -11,7 +12,8 @@ router.get('/',authMiddleware, (req, res) => {
                                 username: req.user.username,
                                 firstName: req.user.firstName,
                                 lastName: req.user.lastName,
-                                age: req.user.age});
+                                age: req.user.age,
+                                isAdmin: req.isAdmin});
     
 });
 

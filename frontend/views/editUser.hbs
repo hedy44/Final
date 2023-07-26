@@ -15,8 +15,9 @@
     <li><a href="/logged">Página Inicial</a></li>
     <li><a href="/sensors">Meus Sensores</a></li>
     <li><a href="/locals">Locais</a></li>
-    {{#if isAdmin}}
-    <li><a href="/listsensors">Gerir Sensores</a></li>
+      {{#if isAdmin}}
+      <!-- Exibir os links adicionais apenas se o usuário for administrador -->
+      <li><a href="/users">Gerir Utilizadores</a></li>
     {{/if}}
     <li><a href="/logout">Log Out</a></li>
   </ul>

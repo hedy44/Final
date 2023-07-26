@@ -6,7 +6,7 @@ const authMiddleware = require('../../middlewares/auth.js');
 router.get('/',authMiddleware, async (req, res) => {
     try {
       const userSensors = await sensor.getUserSensors(req,res);
-      res.render('sensors', { sensors: userSensors });
+      res.render('sensors', { sensors: userSensors, isAdmin: req.isAdmin });
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Internal Server Error' });
