@@ -215,7 +215,8 @@ const headers = {
         devEUI,
         appKey,
         newSensorname,
-        location,
+        latitude,
+        longitude,
         localId,
         description,
         newLocal,
@@ -243,7 +244,8 @@ const headers = {
     sensor.devEUI = devEUI;
     sensor.appKey = appKey;
     sensor.sensorname = newSensorname; // Use o novo nome do sensor se fornecido, caso contrário, mantenha o nome original
-    sensor.location = location;
+    sensor.latitude = latitude;
+    sensor.longitude = longitude;
     sensor.description = description;
     sensor.localId = localId === 'new' ? null : localId;
 
