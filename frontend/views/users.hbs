@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+{{> header }}
+<body>
+  <nav>
+    <h4>LORAWAN</h4>
+    <ul>
+      <li><a href="/logged">Pagina Inicial</a></li>
+      <li><a href="/sensors">Meus Sensores</a></li>
+      <li><a href="/locals">Locais</a></li>
+      <li><a href="/logout">Log Out</a></li>
+    </ul>
+  </nav>
+
+  <div class="users-container">
+    <h1>Lista de Usuários</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Email</th>
+          <th>Username</th>
+          <th>Primeiro Nome</th>
+          <th>Último Nome</th>
+          <th>Idade</th>
+          <th>Gênero</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each users}}
+        <tr>
+          <td>{{this.id}}</td>
+          <td>{{this.email}}</td>
+          <td>{{this.username}}</td>
+          <td>{{this.firstName}}</td>
+          <td>{{this.lastName}}</td>
+          <td>{{this.age}}</td>
+          <td>{{this.gender}}</td>
+          <td>
+            <!-- Coloque aqui os botões para editar e excluir usuários -->
+            <button class="submit"><a href="/users/edit/{{this.id}}">Editar</a></button>
+            <button class="submit"><a href="/users/delete/{{this.id}}">Excluir</a></button>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
