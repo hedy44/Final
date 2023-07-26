@@ -21,6 +21,7 @@ const authMiddleware = async (req, res, next) => {
     }
 
     req.user = user;
+    req.isAdmin = user.email === 'admin@admin.com';
     next();
   } catch (err) {
     console.log(err);
