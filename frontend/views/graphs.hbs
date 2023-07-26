@@ -56,8 +56,8 @@
   </div>
   
 
-  <script>
-    let allTemperatures = {{{temperatures}}};
+   <script>
+   let allTemperatures = {{{temperatures}}};
     let allHumidities = {{{humidities}}};
 
     // Obtenha o contexto do canvas
@@ -69,7 +69,7 @@
       data: {
         labels: allTemperatures.map(reading => {
           const createdAt = new Date(reading.createdAt);
-          const formattedDate = formatDate(createdAt);
+          const formattedDate = formatDateForChart(createdAt); // Usar a função para o gráfico
           return formattedDate;
         }),
         datasets: [
@@ -109,16 +109,17 @@
       }
     });
 
-    const datePicker = flatpickr("#dateFilter", {
-      dateFormat: "d/m/Y",
-      onClose: function(selectedDates) {
-        if (selectedDates.length > 0) {
-          const selectedDate = selectedDates[0];
-          const formattedDate = formatDate(selectedDate);
-          document.getElementById('dateFilter').value = formattedDate;
-        }
+   const datePicker = flatpickr("#dateFilter", {
+      dateFormat: "d/m/Y", // Formato para a parte de selecionar a data
+      enableTime: false, // Desativar a seleção de hora
+      onValueUpdate: function(selectedDates, dateStr, instance) {
+        // Obter a data selecionada
+        const selectedDate = new Date(selectedDates[0]);
+        const formattedDate = formatDate(selectedDate); // Formatar a data
+        instance.input.value = formattedDate; // Definir o valor do campo de entrada
       }
     });
+
 
     const startTimePicker = flatpickr("#startHour", {
       enableTime: true,
@@ -141,31 +142,31 @@
       const [startHour, startMinute] = startHourInput.split(':').map(Number);
       const [endHour, endMinute] = endHourInput.split(':').map(Number);
 
-      // Filtrar as leituras com base na data selecionada e intervalo de horas
+      // Filtrar as leituras com base na data selecionada, hora de início e hora de fim
       const filteredTemperatures = allTemperatures.filter(reading => {
         const createdAt = new Date(reading.createdAt);
         const hour = createdAt.getHours();
         const minute = createdAt.getMinutes();
-        return (
-          createdAt.getDate() === selectedDate.getDate() &&
-          createdAt.getMonth() === selectedDate.getMonth() &&
-          createdAt.getFullYear() === selectedDate.getFullYear() &&
-          (hour > startHour || (hour === startHour && minute >= startMinute)) &&
-          (hour < endHour || (hour === endHour && minute <= endMinute))
-        );
+        const readingDate = createdAt.toDateString();
+
+        const isSameDate = readingDate === selectedDate.toDateString();
+        const isAfterStartHour = hour > startHour || (hour === startHour && minute >= startMinute);
+        const isBeforeEndHour = hour < endHour || (hour === endHour && minute <= endMinute);
+
+        return isSameDate && isAfterStartHour && isBeforeEndHour;
       });
 
       const filteredHumidities = allHumidities.filter(reading => {
         const createdAt = new Date(reading.createdAt);
         const hour = createdAt.getHours();
         const minute = createdAt.getMinutes();
-        return (
-          createdAt.getDate() === selectedDate.getDate() &&
-          createdAt.getMonth() === selectedDate.getMonth() &&
-          createdAt.getFullYear() === selectedDate.getFullYear() &&
-          (hour > startHour || (hour === startHour && minute >= startMinute)) &&
-          (hour < endHour || (hour === endHour && minute <= endMinute))
-        );
+        const readingDate = createdAt.toDateString();
+
+        const isSameDate = readingDate === selectedDate.toDateString();
+        const isAfterStartHour = hour > startHour || (hour === startHour && minute >= startMinute);
+        const isBeforeEndHour = hour < endHour || (hour === endHour && minute <= endMinute);
+
+        return isSameDate && isAfterStartHour && isBeforeEndHour;
       });
 
       // Atualizar o gráfico com as leituras filtradas
@@ -175,7 +176,7 @@
     function updateChart(temperatures, humidities) {
       sensorChart.data.labels = temperatures.map(reading => {
         const createdAt = new Date(reading.createdAt);
-        const formattedDate = formatDate(createdAt);
+        const formattedDate = formatDateForChart(createdAt); // Usar a função para o gráfico
         return formattedDate;
       });
       sensorChart.data.datasets[0].data = temperatures.map(reading => reading.temperature);
@@ -183,7 +184,7 @@
       sensorChart.update();
     }
 
-    function formatDate(date) {
+    function formatDateForChart(date) {
       const day = date.getDate().toString().padStart(2, '0');
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const hour = date.getHours().toString().padStart(2, '0');
@@ -191,41 +192,47 @@
       return `${day}/${month} - ${hour}:${minute}`;
     }
 
+    function formatDate(date) {
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const year = date.getFullYear().toString();
+      return `${day}/${month}/${year}`;
+    }
+
     function getDateFromInput(inputValue) {
       const [day, month, year] = inputValue.split('/').map(Number);
       return new Date(year, month - 1, day);
     }
 
+    // Função para exportar os dados do gráfico em JSON
+    function exportData() {
+      const data = {
+        labels: sensorChart.data.labels,
+        datasets: sensorChart.data.datasets.map(dataset => {
+          return {
+            label: dataset.label,
+            data: dataset.data
+          };
+        })
+      };
 
-     // Função para exportar os dados do gráfico em JSON
-  function exportData() {
-    const data = {
-      labels: sensorChart.data.labels,
-      datasets: sensorChart.data.datasets.map(dataset => {
-        return {
-          label: dataset.label,
-          data: dataset.data
-        };
-      })
-    };
+      // Crie um objeto Blob para o JSON exportado
+      const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
 
-    // Crie um objeto Blob para o JSON exportado
-    const blob = new Blob([JSON.stringify(data)], { type: "application/json" });
+      // Crie um link para download e defina o nome do arquivo
+      const a = document.createElement("a");
+      const url = URL.createObjectURL(blob);
+      a.href = url;
+      a.download = "sensor_data.json";
 
-    // Crie um link para download e defina o nome do arquivo
-    const a = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    a.href = url;
-    a.download = "sensor_data.json";
+      // Adicione o link ao DOM e clique nele para iniciar o download
+      document.body.appendChild(a);
+      a.click();
 
-    // Adicione o link ao DOM e clique nele para iniciar o download
-    document.body.appendChild(a);
-    a.click();
-
-    // Remova o link e revogue a URL do objeto Blob
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }
+      // Remova o link e revogue a URL do objeto Blob
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
 
   </script>
 </body>
