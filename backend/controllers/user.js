@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 const { models: { User } } = require('../models');
+const { hashPasswordSync } = require('../utils/bcrypt');
+const bcrypt = require('bcrypt');
 
 // Função para formatar a primeira letra de uma string para maiúscula
 function capitalizeFirstLetter(str) {
@@ -42,6 +44,8 @@ module.exports = {
      }
 
     try {
+      // Criar o hash da senha usando o utilitário bcrypt
+      const hashedPassword = hashPasswordSync(password);
       // Verificar se o usuário com o email já existe
       const existingUser = await User.findOne({ where: { email } });
 
@@ -63,7 +67,7 @@ module.exports = {
       // Criar um novo usuário
       const newUser = await User.create({ 
         email, 
-        password, 
+        password:hashedPassword, 
         username, 
         firstName: formattedFirstName, 
         lastName: formattedLastName, 
@@ -90,33 +94,34 @@ module.exports = {
       const { email, password } = req.body;
 
       try {
-        const user = await User.findOne({ where: { email, password } });
+        const user = await User.findOne({ where: { email } });
 
         if (user) {
+          // Comparar a senha fornecida com o hash armazenado usando bcrypt.compareSync
+          if (bcrypt.compareSync(password, user.password)) {
+            // Se a senha corresponder, gerar o token JWT e redirecionar para a página de perfil
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            res.cookie('jwt', token, { httpOnly: true });
 
-          req.user = {};
-
-          req.user.email = user.email;
-        req.user.gender = user.gender;
-        req.user.username = user.username;
-        req.user.firstName = user.firstName;
-        req.user.lastName = user.lastName;
-        req.user.age = user.age;
-          // Gerar token
-          const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-          // Definir o token como um cookie
-          res.cookie('jwt', token, { httpOnly: true });
-
-          res.render('profile', { email: user.email,
-                                  gender: user.gender,
-                                  username: user.username,
-                                  firstName: user.firstName,
-                                  lastName: user.lastName,
-                                  age: user.age });
+            res.render('profile', {
+              email: user.email,
+              gender: user.gender,
+              username: user.username,
+              firstName: user.firstName,
+              lastName: user.lastName,
+              age: user.age
+            });
+          } else {
+            // Se a senha não corresponder, mostrar uma mensagem de erro
+            res.render('login', {
+              msg: "A senha inserida está incorreta",
+              msg_type: "error",
+            });
+          }
         } else {
+          // Se o usuário não for encontrado, mostrar uma mensagem de erro
           res.render('login', {
-            msg: "Email or password don't match",
+            msg: "Email ou senha incorretos",
             msg_type: "error",
           });
         }
